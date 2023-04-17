@@ -1,0 +1,65 @@
+personne(k,f,85,tunis).
+personne(c,m,63,nabeul).
+personne(d,f,60,nabeul).
+personne(e,m,35,tunis).
+personne(g,f,27,sousse).
+personne(h,f,39,nabeul).
+personne(i,m,40,nabeul).
+personne(j,m,17,sousse).
+personne(1,f,9,sousse).
+personne(m,f,19,tunis).
+personne(n,m,1,tunis).
+
+% individu(X) denotes that X is an individual
+individu(X) :-
+    personne(X, _, _, _).
+
+% masculin(X) denotes that X is male
+masculin(X) :-
+    personne(X, m, _, _).
+
+% feminin(X) denotes that X is female
+feminin(X) :-
+    personne(X, f, _, _).
+
+% est_agé_de(X, Y) denotes that X is Y years old
+est_agé_de(X, Y) :-
+    personne(X, _, Y, _).
+
+% habite_à(X, Y) denotes that X lives in the city Y
+habite_à(X, Y) :-
+    personne(X, _, _, Y).
+
+% majeur(X) denotes that X is an adult (over 18 years old)
+majeur(X) :-
+    personne(X, _, Age, _),
+    Age >= 18.
+
+% mineur(X) denotes that X is a minor (under 18 years old)
+mineur(X) :-
+    personne(X, _, Age, _),
+    Age < 18.
+
+% même_age(X, Y) denotes that X and Y are the same age
+même_age(X, Y) :-
+    personne(X, _, Age, _),
+    personne(Y, _, Age, _),
+    X \= Y.
+
+% habite_la_même_ville(X, Y) denotes that X and Y live in the same city
+habite_la_même_ville(X, Y) :-
+    personne(X, _, _, Ville),
+    personne(Y, _, _, Ville),
+    X \= Y.
+
+% époux_possible(X, Y) denotes that X is a possible spouse for Y
+époux_possible(X, Y) :-
+    masculin(X),
+    feminin(Y),
+    habite_la_même_ville(X, Y),
+    majeur(X),
+    majeur(Y),
+    personne(X, _, AgeX, _),
+    personne(Y, _, AgeY, _),
+    AbsDiffAge is abs(AgeX - AgeY),
+    AbsDiffAge < 20.
